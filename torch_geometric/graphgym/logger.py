@@ -13,9 +13,11 @@ from torch_geometric.graphgym.utils.io import dict_to_json, dict_to_tb
 
 try:
     import pytorch_lightning as pl
+    from pytorch_lightning import Callback
 
 except ImportError:
     pl = object
+    Callback = object
     logging.warning("pytorch_lightning is not installed")
 
 
@@ -257,7 +259,7 @@ def create_logger():
     return loggers
 
 
-class LoggerCallback(pl.Callback):
+class LoggerCallback(Callback):
     def __init__(self):
         self._logger = create_logger()
 
