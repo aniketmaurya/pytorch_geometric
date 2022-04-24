@@ -42,10 +42,8 @@ if __name__ == '__main__':
         auto_select_device()
         # Set machine learning pipeline
         loaders = create_loader()
-        loggers = create_logger()
         model = create_model()
-        optimizer = create_optimizer(model.parameters(), cfg.optim)
-        scheduler = create_scheduler(optimizer, cfg.optim)
+
         # Print model info
         logging.info(model)
         logging.info(cfg)
@@ -53,8 +51,12 @@ if __name__ == '__main__':
         logging.info('Num parameters: %s', cfg.params)
         # Start training
         if cfg.train.mode == 'standard':
-            train(loggers, loaders, model, optimizer, scheduler)
+            assert len(loaders) == 3
+            train(model, *loaders)
         else:
+            loggers = create_logger()
+            optimizer = create_optimizer(model.parameters(), cfg.optim)
+            scheduler = create_scheduler(optimizer, cfg.optim)
             train_dict[cfg.train.mode](loggers, loaders, model, optimizer,
                                        scheduler)
     # Aggregate results from different seeds
