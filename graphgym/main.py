@@ -51,7 +51,6 @@ if __name__ == '__main__':
         logging.info('Num parameters: %s', cfg.params)
         # Start training
         if cfg.train.mode == 'standard':
-            assert len(loaders) == 3
             train(model, *loaders)
         else:
             loggers = create_logger()
